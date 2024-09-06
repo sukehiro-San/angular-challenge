@@ -1,1 +1,56 @@
-<p>todos works!</p>
+<div class="component-container">
+  <div class="app-container">
+    <div class="cover">
+      <div class="cover-filter"></div>
+    </div>
+    <div class="todos-container">
+      <p class="title">TODOS</p>
+      <div class="todo-box">
+        <div class="empty-checkbox"></div>
+        <input
+          type="text"
+          class="todo-input"
+          name="newTodoInput"
+          placeholder="Enter new todo..."
+          [(ngModel)]="newTodoText"
+          (keypress)="log($event)"
+        />
+        <button class="todo-button" (click)="createTodo()">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </div>
+      <div class="todos">
+        @for(todo of getFilteredTodos(); track todo.id){
+        <div class="todo-box border-b non-sticky-box">
+          @if(todo.completed){
+          <div class="completed-checkbox">
+            <span class="material-symbols-outlined"> task_alt </span>
+          </div>
+          } @if(!todo.completed){
+          <div class="empty-checkbox" (click)="markTodoDone(todo.id)"></div>
+          }
+          <p class="todo-input" [ngClass]="{ 'crossed-text': todo?.completed }">
+            {{ todo.title }}
+          </p>
+          <button class="todo-button" (click)="deleteTodo(todo.id)">
+            <span class="material-symbols-outlined"> delete </span>
+          </button>
+        </div>
+        }
+        <div class="todo-box sticky-box">
+          <div class="task-remaining">
+            {{ getRemainingTodos() + " items remaining" }}
+          </div>
+          <div class="task-filters">
+            <button (click)="this.filter = 'all'">All</button>
+            <button (click)="this.filter = 'active'">Active</button>
+            <button (click)="this.filter = 'completed'">Completed</button>
+          </div>
+          <button class="clearTasksButton" (click)="clearCompletedTodos()">
+            Clear Completed
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
