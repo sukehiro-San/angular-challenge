@@ -174,3 +174,11 @@
   // border-radius: 15px;
   background: linear-gradient(rgb(0, 187, 255), rgb(170, 0, 255));
 }
+
+.selected-filter {
+  background: linear-gradient(
+    to bottom right,
+    rgba(0, 187, 255, 0.5),
+    rgba(170, 0, 255, 0.5)
+  );
+}

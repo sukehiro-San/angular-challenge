@@ -1,14 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
   styleUrl: './todos.component.scss',
 })
-export class TodosComponent {
+export class TodosComponent implements OnInit {
   public todos: TodoInterface[] = [];
   public newTodoText: string | null = null;
   filter: string = 'all';
+
+  ngOnInit(): void {
+    // this.getTodosFromLocalStrorge();
+  }
+
+  getTodosFromLocalStrorge() {
+    const todosNew = localStorage.getItem('todos');
+    try {
+      this.todos = JSON.parse(todosNew as string);
+    } catch {
+      this.todos = [];
+    }
+  }
+
+  setTodosToLocalStorage() {
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
 
   createTodo(): void {
     if (this.newTodoText !== null && this.newTodoText !== '') {
@@ -19,7 +36,8 @@ export class TodosComponent {
         completed: false,
       });
       this.newTodoText = null;
-      console.log(this.todos);
+      this.setTodosToLocalStorage();
+      // console.log(this.todos);
     }
   }
 
@@ -27,6 +45,7 @@ export class TodosComponent {
     let index = this.todos.findIndex((t) => t?.id === key);
     if (index > -1) {
       this.todos.splice(index, 1);
+      this.setTodosToLocalStorage();
     }
   }
 
@@ -34,6 +53,7 @@ export class TodosComponent {
     let index = this.todos.findIndex((t) => t?.id === key);
     if (index > -1) {
       this.todos[index].completed = true;
+      this.setTodosToLocalStorage();
     }
   }
 
@@ -41,10 +61,11 @@ export class TodosComponent {
     this.todos = this.todos?.length
       ? this.todos.filter((t) => !t?.completed)
       : [];
+    this.setTodosToLocalStorage();
   }
 
   getRemainingTodos(): number {
-    return this.todos.filter((t) => !t.completed).length;
+    return this.todos.filter((t) => !t.completed).length || 0;
   }
 
   getFilteredTodos() {

@@ -42,9 +42,24 @@
             {{ getRemainingTodos() + " items remaining" }}
           </div>
           <div class="task-filters">
-            <button (click)="this.filter = 'all'">All</button>
-            <button (click)="this.filter = 'active'">Active</button>
-            <button (click)="this.filter = 'completed'">Completed</button>
+            <button
+              (click)="this.filter = 'all'"
+              [ngClass]="{ 'selected-filter': filter === 'all' }"
+            >
+              All
+            </button>
+            <button
+              (click)="this.filter = 'active'"
+              [ngClass]="{ 'selected-filter': filter === 'active' }"
+            >
+              Active
+            </button>
+            <button
+              (click)="this.filter = 'completed'"
+              [ngClass]="{ 'selected-filter': filter === 'completed' }"
+            >
+              Completed
+            </button>
           </div>
           <button class="clearTasksButton" (click)="clearCompletedTodos()">
             Clear Completed
